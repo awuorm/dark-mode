@@ -3,7 +3,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 const useDarkMode = (value) => {
   const [goingDark, setgoingDark] = useLocalStorage("dark",value);
-  useEffect(() => {
+  useEffect(() => {//Toggling dark mode
     goingDark
       ? document.querySelector("body").setAttribute("class", "dark-mode")
       : document.querySelector("body").removeAttribute("class", "dark-mode");

@@ -12,7 +12,7 @@ const App = () => {
   const [selectedCoin, setSelectedCoin] = useState([]); // Set initial array received from API before user clicks on dropdown
   const [coinDropDown, setCoinDropDown] = useState([]); // Set  array received when user clicks on dropdown
   let selectCoin = ""; //Why couldn't  I set state for this? Resulted in re-rendering error...
-  selectedCoin.forEach(select => {
+  selectedCoin.forEach(select => { // How do I fix this bug ?
     return (selectCoin = select.value);
   });
   const DropdDownCoinURL = `https://api.coingecko.com/api/v3/coins/${selectCoin}?tickers=true&market_data=true&sparkline=true`;

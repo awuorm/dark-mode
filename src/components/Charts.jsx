@@ -3,10 +3,9 @@ import Chart from "./Chart";
 
 const Charts = props => {
   const { coinData, coinDropDown } = props;
-  console.log("coins from index", coinDropDown);
   return (
     <div className="charts">
-      { Array.isArray(coinDropDown) ?   (
+      {Array.isArray(coinDropDown) ? (
         coinDropDown.map(coin => (
           <div className="chart__container" key={coin.name}>
             <h2 className="coin__title">{coin.name}</h2>
@@ -26,7 +25,7 @@ const Charts = props => {
           </div>
           <Chart sparklineData={coinDropDown.market_data.sparkline_7d.price} />
         </div>
-      )  }
+      )}
     </div>
   );
 };

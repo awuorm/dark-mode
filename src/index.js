@@ -8,48 +8,28 @@ import Navbar from "./components/Navbar";
 import "./styles.scss";
 import DropDown from "./components/DropDown";
 
-const coinDataApi =
-  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true";
-const coinListApi = "https://api.coingecko.com/api/v3/coins/list";
 const App = () => {
-  const [coinData, setCoinData] = useState([]);
-  const [coinList, setCoinList] = useState([]);
-  const [selectedCoin, setSelectedCoin] = useState([]);
-  const [coinDropDown, setCoinDropDown] = useState([]);
-let selectCoin = "";
+  const [selectedCoin, setSelectedCoin] = useState([]); // Set initial array received from API before user clicks on dropdown
+  const [coinDropDown, setCoinDropDown] = useState([]); // Set  array received when user clicks on dropdown
+  let selectCoin = ""; //Why couldn't  I set state for this? Resulted in re-rendering error...
   selectedCoin.forEach(select => {
-    // getSelectCoin(select.value);
-    return selectCoin = select.value;
-
+    return (selectCoin = select.value);
   });
-  console.log(" Hello from foreach", selectCoin);
   const DropdDownCoinURL = `https://api.coingecko.com/api/v3/coins/${selectCoin}?tickers=true&market_data=true&sparkline=true`;
 
   useEffect(() => {
-    const getCoinData = axios.get(coinDataApi);
-    const getCoinList = axios.get(coinListApi);
     const getDropDownCoin = axios.get(DropdDownCoinURL);
-    Promise.all([getCoinData, getCoinList,getDropDownCoin])
-      .then(([coinDataRes, coinListRes, DropDownRes]) => {
-        setCoinData(coinDataRes.data);
-        setCoinList(coinListRes.data);
-        setCoinDropDown(DropDownRes.data)
-        
-        console.log("response from coin data", coinDataRes);
-        console.log("response from coin list", coinListRes);
-        console.log("response from dropdown coin URL", coinDropDown);
+    getDropDownCoin
+      .then(DropDownRes => {
+        setCoinDropDown(DropDownRes.data);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err.message));
   }, [selectedCoin]);
   return (
     <div className="App">
       <Navbar />
-      <DropDown
-        selectedCoin={selectedCoin}
-        setSelectedCoin={setSelectedCoin}
-        coinList={coinList}
-      />
-      <Charts coinDropDown={coinDropDown} coinData={coinData} />
+      <DropDown selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} />
+      <Charts coinDropDown={coinDropDown} />
     </div>
   );
 };

@@ -6,22 +6,30 @@ import Charts from "./components/Charts";
 import Navbar from "./components/Navbar";
 
 import "./styles.scss";
+import DropDown from "./components/DropDown";
 
 const App = () => {
-  const [coinData, setCoinData] = useState([]);
+  const [selectedCoin, setSelectedCoin] = useState([]); // Set initial array received from API before user clicks on dropdown
+  const [coinDropDown, setCoinDropDown] = useState([]); // Set  array received when user clicks on dropdown
+  let selectCoin = ""; //Why couldn't  I set state for this? Resulted in re-rendering error...
+  selectedCoin.forEach(select => { // How do I fix this bug ?
+    return (selectCoin = select.value);
+  });
+  const DropdDownCoinURL = `https://api.coingecko.com/api/v3/coins/${selectCoin}?tickers=true&market_data=true&sparkline=true`;
 
   useEffect(() => {
-    axios
-      .get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true"
-      )
-      .then(res => setCoinData(res.data))
-      .catch(err => console.log(err));
-  }, []);
+    const getDropDownCoin = axios.get(DropdDownCoinURL);
+    getDropDownCoin
+      .then(DropDownRes => {
+        setCoinDropDown(DropDownRes.data);
+      })
+      .catch(err => console.log(err.message));
+  }, [selectedCoin]);
   return (
     <div className="App">
       <Navbar />
-      <Charts coinData={coinData} />
+      <DropDown selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} />
+      <Charts coinDropDown={coinDropDown} />
     </div>
   );
 };
